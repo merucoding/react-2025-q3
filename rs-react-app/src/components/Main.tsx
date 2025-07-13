@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import type { Pokemon } from 'pokeapi-typescript';
 import Search from './Search';
+import CardList from './CardList';
 
 type MainState = {
   loading: boolean;
@@ -80,9 +81,18 @@ class Main extends Component {
   };
 
   render() {
+    const { loading, pokemons, errorMessage } = this.state;
+
+    if (loading) return <div>Loading...</div>;
+
     return (
       <main>
         <Search onSearch={this.handleSearch} />
+        {errorMessage ? (
+          <div>{errorMessage}</div>
+        ) : (
+          <CardList pokemons={pokemons} />
+        )}
       </main>
     );
   }
