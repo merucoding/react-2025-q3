@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import type { Pokemon } from 'pokeapi-typescript';
+import Search from './Search';
 
 type MainState = {
   loading: boolean;
@@ -41,6 +42,7 @@ class Main extends Component {
         const response = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${searchText}`
         );
+        if (!response.ok) throw new Error(`Pokemon "${searchText}" not found`);
         const data: Pokemon = await response.json();
         this.setState({ pokemons: [data], loading: false });
       } else {
@@ -61,16 +63,28 @@ class Main extends Component {
         }
       }
     } catch (error) {
-      this.setState({
-        loading: false,
-        errorMessage: error instanceof Error ? error.message : 'Unknown Error',
-      });
-      console.error(error);
+      if (error instanceof Error) {
+        this.setState({
+          loading: false,
+          errorMessage: error.message,
+        });
+        console.error(error.message);
+      }
     }
   }
 
+  handleSearch = (searchText: string) => {
+    localStorage.setItem('searchText', searchText);
+    this.setState({ searchText: searchText });
+    this.fetchData(searchText);
+  };
+
   render() {
-    return <div></div>;
+    return (
+      <main>
+        <Search onSearch={this.handleSearch} />
+      </main>
+    );
   }
 }
 
