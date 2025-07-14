@@ -1,7 +1,7 @@
 import { Component, type ChangeEvent } from 'react';
 import ErrorButton from './ErrorButton';
 import { borderStyles } from './Main';
-import { Search, X } from 'lucide-react';
+import { Eraser, Search } from 'lucide-react';
 
 type SearchProps = {
   onSearch: (searchText: string) => void;
@@ -38,7 +38,7 @@ class TopControls extends Component<SearchProps> {
           onClick={this.handleClear}
           className={`${borderStyles} hover:bg-fuchsia-300 hover:text-white`}
         >
-          <X />
+          <Eraser />
         </button>
         <button
           onClick={this.handleSearch}
