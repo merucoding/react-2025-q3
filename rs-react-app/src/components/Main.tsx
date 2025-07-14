@@ -1,7 +1,8 @@
 import { Component } from 'react';
 import type { Pokemon } from 'pokeapi-typescript';
-import Search from './Search';
 import CardList from './CardList';
+import TopControls from './TopControls';
+import Loading from './Loading';
 
 type MainState = {
   loading: boolean;
@@ -13,6 +14,9 @@ type MainState = {
 interface PokemonListResponse {
   results: { url: string }[];
 }
+
+export const borderStyles =
+  'px-2 py-2 border-1 border-solid border-fuchsia-300 rounded-xl cursor-pointer';
 
 function isPokemonListResponse(data: unknown): data is PokemonListResponse {
   return (
@@ -43,7 +47,19 @@ class Main extends Component {
         const response = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${searchText}`
         );
-        if (!response.ok) throw new Error(`Pokemon "${searchText}" not found`);
+        if (!response.ok) {
+          let message = '';
+          if (response.status === 404) {
+            message = `Error 404: Pokemon "${searchText}" not found`;
+          } else if (response.status >= 400 && response.status < 500) {
+            message = `Client error (${response.status}): ${response.statusText}`;
+          } else if (response.status >= 500) {
+            message = `Server error (${response.status}): ${response.statusText}`;
+          }
+          this.setState({ loading: false, errorMessage: message });
+          return;
+        }
+
         const data: Pokemon = await response.json();
         this.setState({ pokemons: [data], loading: false });
       } else {
@@ -65,10 +81,6 @@ class Main extends Component {
       }
     } catch (error) {
       if (error instanceof Error) {
-        this.setState({
-          loading: false,
-          errorMessage: error.message,
-        });
         console.error(error.message);
       }
     }
@@ -83,13 +95,15 @@ class Main extends Component {
   render() {
     const { loading, pokemons, errorMessage } = this.state;
 
-    if (loading) return <div>Loading...</div>;
-
     return (
-      <main>
-        <Search onSearch={this.handleSearch} />
-        {errorMessage ? (
-          <div>{errorMessage}</div>
+      <main className="font-lexend-exa text-emerald-500 font-light">
+        <TopControls onSearch={this.handleSearch} />
+        {loading ? (
+          <Loading />
+        ) : errorMessage ? (
+          <div className="mt-8 text-fuchsia-400 font-bold text-lg">
+            {errorMessage}
+          </div>
         ) : (
           <CardList pokemons={pokemons} />
         )}

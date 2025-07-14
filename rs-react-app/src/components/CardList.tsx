@@ -11,7 +11,7 @@ class CardList extends Component<CardListProps> {
     const { pokemons } = this.props;
 
     return (
-      <div>
+      <div className="mt-6 flex gap-4 flex-wrap justify-center">
         {pokemons.map((pokemon, index) => (
           <Card key={index} pokemon={pokemon} />
         ))}

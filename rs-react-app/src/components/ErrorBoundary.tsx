@@ -17,8 +17,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
   render() {
     if (this.state.hasError) {
       return (
-        <div>
-          <h1>Something went wrong.</h1>
+        <div className="flex justify-center items-center h-100">
+          <h1 className="font-lexend-exa text-fuchsia-400 font-bold text-2xl">
+            Something went wrong..
+          </h1>
         </div>
       );
     }
