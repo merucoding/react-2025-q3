@@ -27,7 +27,7 @@ export default class TopControls extends Component<SearchProps> {
 
   render() {
     return (
-      <div className="flex justify-center gap-x-4 mt-8">
+      <div className="flex justify-center gap-4 mt-8 flex-wrap">
         <input
           type="text"
           value={this.state.input}
