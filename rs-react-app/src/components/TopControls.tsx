@@ -1,13 +1,13 @@
 import { Component, type ChangeEvent } from 'react';
 import ErrorButton from './ErrorButton';
-import { borderStyles } from './Main';
 import { Eraser, Search } from 'lucide-react';
+import { BORDER_STYLES } from '../types/constants';
 
 type SearchProps = {
   onSearch: (searchText: string) => void;
 };
 
-class TopControls extends Component<SearchProps> {
+export default class TopControls extends Component<SearchProps> {
   state = {
     input: localStorage.getItem('searchText') || '',
   };
@@ -32,17 +32,17 @@ class TopControls extends Component<SearchProps> {
           type="text"
           value={this.state.input}
           onChange={this.handleChange}
-          className={borderStyles}
+          className={BORDER_STYLES}
         />
         <button
           onClick={this.handleClear}
-          className={`${borderStyles} hover:bg-fuchsia-300 hover:text-white`}
+          className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
         >
           <Eraser />
         </button>
         <button
           onClick={this.handleSearch}
-          className={`${borderStyles} hover:bg-fuchsia-300 hover:text-white`}
+          className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
         >
           <Search />
         </button>
@@ -51,5 +51,3 @@ class TopControls extends Component<SearchProps> {
     );
   }
 }
-
-export default TopControls;

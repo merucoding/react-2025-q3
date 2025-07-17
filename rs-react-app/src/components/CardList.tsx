@@ -6,7 +6,7 @@ type CardListProps = {
   pokemons: Pokemon[];
 };
 
-class CardList extends Component<CardListProps> {
+export default class CardList extends Component<CardListProps> {
   render() {
     const { pokemons } = this.props;
 
@@ -19,5 +19,3 @@ class CardList extends Component<CardListProps> {
     );
   }
 }
-
-export default CardList;

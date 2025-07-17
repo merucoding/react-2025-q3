@@ -1,11 +1,11 @@
 import { Component } from 'react';
-import { borderStyles } from './Main';
+import { BORDER_STYLES } from '../types/constants';
 
 type ErrorButtonState = {
   showError: boolean;
 };
 
-class ErrorButton extends Component {
+export default class ErrorButton extends Component {
   state: ErrorButtonState = {
     showError: false,
   };
@@ -16,12 +16,10 @@ class ErrorButton extends Component {
     return (
       <button
         onClick={() => this.setState({ showError: true })}
-        className={`${borderStyles} hover:bg-fuchsia-300 hover:text-white`}
+        className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
       >
         trigger error
       </button>
     );
   }
 }
-
-export default ErrorButton;

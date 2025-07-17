@@ -3,6 +3,7 @@ import type { Pokemon } from 'pokeapi-typescript';
 import CardList from './CardList';
 import TopControls from './TopControls';
 import Loading from './Loading';
+import { fetchPokemons } from '../api/fetchPokemons';
 
 type MainState = {
   loading: boolean;
@@ -11,23 +12,7 @@ type MainState = {
   errorMessage: string;
 };
 
-interface PokemonListResponse {
-  results: { url: string }[];
-}
-
-export const borderStyles =
-  'px-2 py-2 border-1 border-solid border-fuchsia-300 rounded-xl cursor-pointer';
-
-function isPokemonListResponse(data: unknown): data is PokemonListResponse {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    'results' in data &&
-    Array.isArray(data.results)
-  );
-}
-
-class Main extends Component {
+export default class Main extends Component {
   state: MainState = {
     loading: false,
     pokemons: [],
@@ -36,60 +21,19 @@ class Main extends Component {
   };
 
   componentDidMount(): void {
-    this.fetchData(this.state.searchText);
+    this.loadPokemons(this.state.searchText);
   }
 
-  async fetchData(searchText: string): Promise<void> {
+  async loadPokemons(searchText: string): Promise<void> {
     this.setState({ loading: true, pokemons: [], errorMessage: '' });
-
-    try {
-      if (searchText) {
-        const response = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${searchText}`
-        );
-        if (!response.ok) {
-          let message = '';
-          if (response.status === 404) {
-            message = `Error 404: Pokemon "${searchText}" not found`;
-          } else if (response.status >= 400 && response.status < 500) {
-            message = `Client error (${response.status}): ${response.statusText}`;
-          } else if (response.status >= 500) {
-            message = `Server error (${response.status}): ${response.statusText}`;
-          }
-          this.setState({ loading: false, errorMessage: message });
-          return;
-        }
-
-        const data: Pokemon = await response.json();
-        this.setState({ pokemons: [data], loading: false });
-      } else {
-        const response = await fetch(
-          'https://pokeapi.co/api/v2/pokemon?offset=0&limit=20'
-        );
-        const data: unknown = await response.json();
-        if (isPokemonListResponse(data)) {
-          const results = data.results;
-          const pokemonList: Pokemon[] = await Promise.all(
-            results.map(async (item) => {
-              const response = await fetch(item.url);
-              const data: Pokemon = await response.json();
-              return data;
-            })
-          );
-          this.setState({ pokemons: pokemonList, loading: false });
-        }
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
+    const { pokemons, errorMessage } = await fetchPokemons(searchText);
+    this.setState({ loading: false, pokemons, errorMessage });
   }
 
   handleSearch = (searchText: string) => {
     localStorage.setItem('searchText', searchText);
     this.setState({ searchText: searchText });
-    this.fetchData(searchText);
+    this.loadPokemons(searchText);
   };
 
   render() {
@@ -111,5 +55,3 @@ class Main extends Component {
     );
   }
 }
-
-export default Main;

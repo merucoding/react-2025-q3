@@ -5,7 +5,7 @@ type CardProps = {
   pokemon: Pokemon;
 };
 
-class Card extends Component<CardProps> {
+export default class Card extends Component<CardProps> {
   render() {
     const { pokemon } = this.props;
 
@@ -22,5 +22,3 @@ class Card extends Component<CardProps> {
     );
   }
 }
-
-export default Card;
