@@ -1,7 +1,7 @@
 import { Component, type ChangeEvent } from 'react';
 import ErrorButton from './ErrorButton';
 import { Eraser, Search } from 'lucide-react';
-import { BORDER_STYLES } from '../types/constants';
+import { BORDER_STYLES, LOCAL_STORAGE_QUERY_KEY } from '../types/constants';
 
 type SearchProps = {
   onSearch: (searchText: string) => void;
@@ -9,7 +9,7 @@ type SearchProps = {
 
 export default class TopControls extends Component<SearchProps> {
   state = {
-    input: localStorage.getItem('searchText') || '',
+    input: localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || '',
   };
 
   handleChange = (event: ChangeEvent<HTMLInputElement>) => {

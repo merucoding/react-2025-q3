@@ -4,6 +4,7 @@ import CardList from './CardList';
 import TopControls from './TopControls';
 import Loading from './Loading';
 import { fetchPokemons } from '../api/fetchPokemons';
+import { LOCAL_STORAGE_QUERY_KEY } from '../types/constants';
 
 type MainState = {
   loading: boolean;
@@ -16,7 +17,7 @@ export default class Main extends Component {
   state: MainState = {
     loading: false,
     pokemons: [],
-    searchText: localStorage.getItem('searchText') || '',
+    searchText: localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || '',
     errorMessage: '',
   };
 
@@ -31,7 +32,7 @@ export default class Main extends Component {
   }
 
   handleSearch = (searchText: string) => {
-    localStorage.setItem('searchText', searchText);
+    localStorage.setItem(LOCAL_STORAGE_QUERY_KEY, searchText);
     this.setState({ searchText: searchText });
     this.loadPokemons(searchText);
   };
