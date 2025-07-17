@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 enum HttpStatusCode {
   /**
    * The server has received the request headers and the client should proceed to send the request body
