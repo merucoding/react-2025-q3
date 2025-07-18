@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@100..900&family=Permanent+Marker&display=swap');
+@import "tailwindcss";
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background: url('../assets/pikachu.svg');
+  background-size: 15%;
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+@theme {
+  --font-lexend-exa: 'Lexend Exa', sans-serif;
+  --font-logo: 'Permanent Marker', cursive;
+}
