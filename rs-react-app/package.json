@@ -41,6 +41,7 @@
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
+    "msw": "^2.10.4",
     "pokeapi-typescript": "^3.0.3",
     "prettier": "3.6.2",
     "tailwindcss": "^4.1.11",
