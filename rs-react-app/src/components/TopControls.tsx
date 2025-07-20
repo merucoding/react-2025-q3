@@ -29,6 +29,7 @@ export default class TopControls extends Component<SearchProps> {
     return (
       <div className="flex justify-center gap-4 mt-8 flex-wrap">
         <input
+          data-testid="input"
           type="text"
           value={this.state.input}
           onChange={this.handleChange}
@@ -41,6 +42,7 @@ export default class TopControls extends Component<SearchProps> {
           <Eraser />
         </button>
         <button
+          data-testid="search-button"
           onClick={this.handleSearch}
           className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
         >
