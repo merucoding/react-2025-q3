@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import type { Pokemon } from 'pokeapi-typescript';
-import CardList from './CardList';
-import TopControls from './TopControls';
-import Loading from './Loading';
-import { fetchPokemons } from '../api/fetchPokemons';
-import { LOCAL_STORAGE_QUERY_KEY } from '../types/constants';
+import CardList from '../CardList/CardList';
+import Loading from '../Loading/Loading';
+import { fetchPokemons } from '../../api/fetchPokemons';
+import { LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
+import TopControls from '../TopControls/TopControls';
 
 type MainState = {
   loading: boolean;

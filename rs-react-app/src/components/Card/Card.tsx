@@ -1,6 +1,6 @@
 import type { Pokemon } from 'pokeapi-typescript';
 import { Component } from 'react';
-import { UNIT_CONVERSION } from '../types/constants';
+import { UNIT_CONVERSION } from '../../types/constants';
 
 type CardProps = {
   pokemon: Pokemon;

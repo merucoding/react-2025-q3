@@ -1,6 +1,6 @@
 import type { Pokemon } from 'pokeapi-typescript';
 import { Component } from 'react';
-import Card from './Card';
+import Card from '../Card/Card';
 
 type CardListProps = {
   pokemons: Pokemon[];

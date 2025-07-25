@@ -1,7 +1,7 @@
 import { Component, type ChangeEvent } from 'react';
-import ErrorButton from './ErrorButton';
 import { Eraser, Search } from 'lucide-react';
-import { BORDER_STYLES, LOCAL_STORAGE_QUERY_KEY } from '../types/constants';
+import { BORDER_STYLES, LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
+import ErrorButton from '../ErrorButton/ErrorButton';
 
 type SearchProps = {
   onSearch: (searchText: string) => void;
