@@ -2,16 +2,14 @@ import type { Pokemon } from 'pokeapi-typescript';
 import CardList from '../CardList/CardList';
 import Loading from '../Loading/Loading';
 import { fetchPokemons } from '../../api/fetchPokemons';
-import { LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
 import TopControls from '../TopControls/TopControls';
 import { useEffect, useState } from 'react';
+import { useSearchText } from '../../hooks/useSearchText';
 
 export default function Main() {
+  const [searchText, setSearchText] = useSearchText();
   const [loading, setLoading] = useState(false);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [searchText, setSearchText] = useState(
-    localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || ''
-  );
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -31,13 +29,12 @@ export default function Main() {
   };
 
   const handleSearch = (searchText: string) => {
-    localStorage.setItem(LOCAL_STORAGE_QUERY_KEY, searchText);
     setSearchText(searchText);
   };
 
   return (
     <main className="font-lexend-exa text-emerald-500 font-light">
-      <TopControls onSearch={handleSearch} />
+      <TopControls searchText={searchText} onSearch={handleSearch} />
       {loading ? (
         <Loading />
       ) : errorMessage ? (

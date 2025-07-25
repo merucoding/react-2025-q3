@@ -1,16 +1,15 @@
 import { useState, type ChangeEvent } from 'react';
 import { Eraser, Search } from 'lucide-react';
-import { BORDER_STYLES, LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
+import { BORDER_STYLES } from '../../types/constants';
 import ErrorButton from '../ErrorButton/ErrorButton';
 
 type SearchProps = {
+  searchText: string;
   onSearch: (searchText: string) => void;
 };
 
-export default function TopControls({ onSearch }: SearchProps) {
-  const [input, setInput] = useState(
-    localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || ''
-  );
+export default function TopControls({ searchText, onSearch }: SearchProps) {
+  const [input, setInput] = useState(searchText);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInput(event.target.value);
