@@ -1,4 +1,4 @@
-import { Component, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { Eraser, Search } from 'lucide-react';
 import { BORDER_STYLES, LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
 import ErrorButton from '../ErrorButton/ErrorButton';
@@ -7,49 +7,47 @@ type SearchProps = {
   onSearch: (searchText: string) => void;
 };
 
-export default class TopControls extends Component<SearchProps> {
-  state = {
-    input: localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || '',
+export default function TopControls({ onSearch }: SearchProps) {
+  const [input, setInput] = useState(
+    localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || ''
+  );
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
   };
 
-  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ input: event.target.value });
+  const handleSearch = () => {
+    const trimmedValue = input.trim();
+    onSearch(trimmedValue);
   };
 
-  handleSearch = () => {
-    const trimmedValue = this.state.input.trim();
-    this.props.onSearch(trimmedValue);
+  const handleClear = () => {
+    setInput('');
   };
 
-  handleClear = () => {
-    this.setState({ input: '' });
-  };
-
-  render() {
-    return (
-      <div className="flex justify-center gap-4 mt-8 flex-wrap">
-        <input
-          data-testid="input"
-          type="text"
-          value={this.state.input}
-          onChange={this.handleChange}
-          className={BORDER_STYLES}
-        />
-        <button
-          onClick={this.handleClear}
-          className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
-        >
-          <Eraser />
-        </button>
-        <button
-          data-testid="search-button"
-          onClick={this.handleSearch}
-          className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
-        >
-          <Search />
-        </button>
-        <ErrorButton />
-      </div>
-    );
-  }
+  return (
+    <div className="flex justify-center gap-4 mt-8 flex-wrap">
+      <input
+        data-testid="input"
+        type="text"
+        value={input}
+        onChange={handleChange}
+        className={BORDER_STYLES}
+      />
+      <button
+        onClick={handleClear}
+        className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
+      >
+        <Eraser />
+      </button>
+      <button
+        data-testid="search-button"
+        onClick={handleSearch}
+        className={`${BORDER_STYLES} hover:bg-fuchsia-300 hover:text-white`}
+      >
+        <Search />
+      </button>
+      <ErrorButton />
+    </div>
+  );
 }

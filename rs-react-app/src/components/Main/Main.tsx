@@ -1,58 +1,52 @@
-import { Component } from 'react';
 import type { Pokemon } from 'pokeapi-typescript';
 import CardList from '../CardList/CardList';
 import Loading from '../Loading/Loading';
 import { fetchPokemons } from '../../api/fetchPokemons';
 import { LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
 import TopControls from '../TopControls/TopControls';
+import { useEffect, useState } from 'react';
 
-type MainState = {
-  loading: boolean;
-  pokemons: Pokemon[];
-  searchText: string;
-  errorMessage: string;
-};
+export default function Main() {
+  const [loading, setLoading] = useState(false);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [searchText, setSearchText] = useState(
+    localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || ''
+  );
+  const [errorMessage, setErrorMessage] = useState('');
 
-export default class Main extends Component {
-  state: MainState = {
-    loading: false,
-    pokemons: [],
-    searchText: localStorage.getItem(LOCAL_STORAGE_QUERY_KEY) || '',
-    errorMessage: '',
-  };
+  useEffect(() => {
+    loadPokemons(searchText);
+  }, [searchText]);
 
-  componentDidMount(): void {
-    this.loadPokemons(this.state.searchText);
-  }
+  const loadPokemons = async (searchText: string) => {
+    setLoading(true);
+    setPokemons([]);
+    setErrorMessage('');
 
-  async loadPokemons(searchText: string): Promise<void> {
-    this.setState({ loading: true, pokemons: [], errorMessage: '' });
     const { pokemons, errorMessage } = await fetchPokemons(searchText);
-    this.setState({ loading: false, pokemons, errorMessage });
-  }
 
-  handleSearch = (searchText: string) => {
-    localStorage.setItem(LOCAL_STORAGE_QUERY_KEY, searchText);
-    this.setState({ searchText: searchText });
-    this.loadPokemons(searchText);
+    setLoading(false);
+    setPokemons(pokemons);
+    setErrorMessage(errorMessage);
   };
 
-  render() {
-    const { loading, pokemons, errorMessage } = this.state;
+  const handleSearch = (searchText: string) => {
+    localStorage.setItem(LOCAL_STORAGE_QUERY_KEY, searchText);
+    setSearchText(searchText);
+  };
 
-    return (
-      <main className="font-lexend-exa text-emerald-500 font-light">
-        <TopControls onSearch={this.handleSearch} />
-        {loading ? (
-          <Loading />
-        ) : errorMessage ? (
-          <div className="mt-8 text-fuchsia-400 font-bold text-lg">
-            {errorMessage}
-          </div>
-        ) : (
-          <CardList pokemons={pokemons} />
-        )}
-      </main>
-    );
-  }
+  return (
+    <main className="font-lexend-exa text-emerald-500 font-light">
+      <TopControls onSearch={handleSearch} />
+      {loading ? (
+        <Loading />
+      ) : errorMessage ? (
+        <div className="mt-8 text-fuchsia-400 font-bold text-lg">
+          {errorMessage}
+        </div>
+      ) : (
+        <CardList pokemons={pokemons} />
+      )}
+    </main>
+  );
 }
