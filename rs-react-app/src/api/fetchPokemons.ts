@@ -5,7 +5,7 @@ import { URL } from '../types/constants';
 
 export async function fetchPokemons(
   searchText: string,
-  page: number
+  page?: number
 ): Promise<{
   pokemons: Pokemon[];
   errorMessage: string;
@@ -21,7 +21,7 @@ export async function fetchPokemons(
       return { pokemons: [pokemon], errorMessage: '' };
     } else {
       const CARDS_PER_PAGE = 12;
-      const offset = (page - 1) * CARDS_PER_PAGE;
+      const offset = page && (page - 1) * CARDS_PER_PAGE;
       const response = await fetch(
         `${URL}?offset=${offset}&limit=${CARDS_PER_PAGE}`
       );

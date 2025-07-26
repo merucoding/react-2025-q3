@@ -6,17 +6,25 @@ import TopControls from '../TopControls/TopControls';
 import { useEffect, useState } from 'react';
 import { useSearchText } from '../../hooks/useSearchText';
 import PaginationControls from './PaginationControls';
+import { useNavigate, useParams } from 'react-router-dom';
+import DetailedView from '../Card/DetailedView';
 
 export default function Main() {
   const [searchText, setSearchText] = useSearchText();
   const [loading, setLoading] = useState(false);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [page, setPage] = useState(1);
+  const { page = '1', pokemonName } = useParams();
+  const currentPage = Number(page);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    loadPokemons(searchText, page);
-  }, [searchText, page]);
+    loadPokemons(searchText, currentPage);
+  }, [searchText, currentPage]);
+
+  const handlePageChange = (newPage: number) => {
+    navigate(`/${newPage}/${pokemonName ?? ''}`);
+  };
 
   const loadPokemons = async (searchText: string, page: number) => {
     setLoading(true);
@@ -46,8 +54,9 @@ export default function Main() {
       ) : (
         <>
           <CardList pokemons={pokemons} />
+          {pokemonName && <DetailedView />}
           {!searchText && pokemons.length > 0 && (
-            <PaginationControls page={page} setPage={setPage} />
+            <PaginationControls page={currentPage} setPage={handlePageChange} />
           )}
         </>
       )}

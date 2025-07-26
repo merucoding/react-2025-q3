@@ -11,7 +11,7 @@ export default function PaginationControls({
   setPage,
 }: PaginationControlsProps) {
   const isFirstPage = page === 1;
-
+  console.log(page);
   return (
     <div className="mt-6 flex gap-x-4 justify-center [&>*]:w-[42px] [&>*]:h-[42px]">
       <button
