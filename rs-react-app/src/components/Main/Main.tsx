@@ -5,23 +5,25 @@ import { fetchPokemons } from '../../api/fetchPokemons';
 import TopControls from '../TopControls/TopControls';
 import { useEffect, useState } from 'react';
 import { useSearchText } from '../../hooks/useSearchText';
+import PaginationControls from './PaginationControls';
 
 export default function Main() {
   const [searchText, setSearchText] = useSearchText();
   const [loading, setLoading] = useState(false);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    loadPokemons(searchText);
-  }, [searchText]);
+    loadPokemons(searchText, page);
+  }, [searchText, page]);
 
-  const loadPokemons = async (searchText: string) => {
+  const loadPokemons = async (searchText: string, page: number) => {
     setLoading(true);
     setPokemons([]);
     setErrorMessage('');
 
-    const { pokemons, errorMessage } = await fetchPokemons(searchText);
+    const { pokemons, errorMessage } = await fetchPokemons(searchText, page);
 
     setLoading(false);
     setPokemons(pokemons);
@@ -42,7 +44,12 @@ export default function Main() {
           {errorMessage}
         </div>
       ) : (
-        <CardList pokemons={pokemons} />
+        <>
+          <CardList pokemons={pokemons} />
+          {!searchText && pokemons.length > 0 && (
+            <PaginationControls page={page} setPage={setPage} />
+          )}
+        </>
       )}
     </main>
   );
