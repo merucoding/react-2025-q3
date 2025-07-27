@@ -1,7 +1,7 @@
 import type { Pokemon } from 'pokeapi-typescript';
 import { render, screen } from '@testing-library/react';
 import Card from './Card';
-import { UNIT_CONVERSION } from '../types/constants';
+import { UNIT_CONVERSION } from '../../types/constants';
 
 const mockPokemon = {
   name: 'pikachu',

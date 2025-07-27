@@ -1,8 +1,8 @@
-import * as fetchPokemons from '../api/fetchPokemons';
+import * as fetchPokemons from '../../api/fetchPokemons';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 import Main from './Main';
-import { LOCAL_STORAGE_QUERY_KEY } from '../types/constants';
+import { LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
 import type { Pokemon } from 'pokeapi-typescript';
 
 describe('Main component', () => {

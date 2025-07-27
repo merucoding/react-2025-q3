@@ -1,15 +1,18 @@
 import type { Pokemon } from 'pokeapi-typescript';
 import { isPokemonListResponse } from './isPokemonListResponse';
 import { getErrorMessage } from './getErrorMessage';
-import { POKEMON_BY_NAME_URL, POKEMON_LIST_URL } from '../types/constants';
+import { URL } from '../types/constants';
 
-export async function fetchPokemons(searchText: string): Promise<{
+export async function fetchPokemons(
+  searchText: string,
+  page?: number
+): Promise<{
   pokemons: Pokemon[];
   errorMessage: string;
 }> {
   try {
     if (searchText) {
-      const response = await fetch(`${POKEMON_BY_NAME_URL}${searchText}`);
+      const response = await fetch(`${URL}/${searchText}`);
       if (!response.ok) {
         const message = getErrorMessage(response.status, searchText);
         return { pokemons: [], errorMessage: message };
@@ -17,7 +20,11 @@ export async function fetchPokemons(searchText: string): Promise<{
       const pokemon: Pokemon = await response.json();
       return { pokemons: [pokemon], errorMessage: '' };
     } else {
-      const response = await fetch(POKEMON_LIST_URL);
+      const CARDS_PER_PAGE = 12;
+      const offset = page && (page - 1) * CARDS_PER_PAGE;
+      const response = await fetch(
+        `${URL}?offset=${offset}&limit=${CARDS_PER_PAGE}`
+      );
       const data: unknown = await response.json();
       if (isPokemonListResponse(data)) {
         const results = data.results;

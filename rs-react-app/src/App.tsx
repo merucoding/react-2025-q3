@@ -1,15 +1,12 @@
-import { Component } from 'react';
-import Header from './components/Header';
-import Main from './components/Main';
-import ErrorBoundary from './components/ErrorBoundary';
+import Header from './components/Header/Header';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import { Outlet } from 'react-router-dom';
 
-export default class App extends Component {
-  render() {
-    return (
-      <ErrorBoundary>
-        <Header />
-        <Main />
-      </ErrorBoundary>
-    );
-  }
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <Header />
+      <Outlet />
+    </ErrorBoundary>
+  );
 }

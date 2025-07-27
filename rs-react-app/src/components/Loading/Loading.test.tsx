@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import Loading from './Loading';
-import Main from './Main';
+import Main from '../Main/Main';
 import { vi } from 'vitest';
-import * as fetchPokemons from '../api/fetchPokemons';
+import * as fetchPokemons from '../../api/fetchPokemons';
 
 describe('Loading component', () => {
   it('renders spinner', () => {

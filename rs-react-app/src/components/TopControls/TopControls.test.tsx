@@ -1,7 +1,7 @@
 import TopControls from './TopControls';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { LOCAL_STORAGE_QUERY_KEY } from '../types/constants';
+import { LOCAL_STORAGE_QUERY_KEY } from '../../types/constants';
 
 describe('TopControls component', () => {
   it('renders search input and buttons', () => {
